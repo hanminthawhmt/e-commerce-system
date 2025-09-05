@@ -2,6 +2,8 @@
 const express = require('express');
 // import the mongodb
 const mongoose = require('mongoose');
+
+const cors = require('cors');
 const authRoute = require('./route/auth');
 const bannerRoute = require('./route/banner');
 const categoryRoute = require('./route/category');
@@ -13,11 +15,12 @@ const PORT = 3000;
 // create instnace of an express application -> starting point
 const app = express();
 // MongoDB String
-const DB = ('mongodb+srv://hanminthaw15:hminthaw1590@cluster0.1nr4coe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+const DB = ('mongodb+srv://hanminthaw:hminthaw1590@cluster0.lhk53p0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 mongoose.connect(DB).then(()=>{
     console.log('MongoDB is connected');
 });
 app.use(express.json());
+app.use(cors()); //enable cors for all routes and all regions
 app.use(authRoute);
 app.use(bannerRoute);
 app.use(categoryRoute);
