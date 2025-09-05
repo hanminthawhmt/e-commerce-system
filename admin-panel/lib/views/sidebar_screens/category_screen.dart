@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:web_app/controllers/category_controller.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String id = '/category-screen';
@@ -11,6 +12,7 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final CategoryController _categoryController = CategoryController();
   dynamic _image;
   dynamic _bannerImage;
   late String categoryName;
@@ -104,7 +106,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 child: Text('Save', style: TextStyle(color: Colors.black)),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    print('Category Name: $categoryName');
+                    _categoryController.uploadCategoryImages(
+                      categoryImage: _image,
+                      bannerImage: _bannerImage,
+                      context: context,
+                      name: categoryName,
+                    );
                   }
                 },
               ),
@@ -132,13 +139,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Center(child: Text('Banner Image', style: TextStyle(
-                color: Colors.white
-              ),)),
+              child: Center(
+                child:
+                    _bannerImage !=
+                         null
+                            ? Image.memory(_bannerImage)
+                            : Text(
+                              'Banner Image',
+                              style: TextStyle(color: Colors.white),
+                            ),
+              ),
             ),
           ),
 
-           Padding(
+          Padding(
             padding: EdgeInsets.all(8),
             child: ElevatedButton(
               onPressed: pickBannerImage,
