@@ -1,9 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:web_app/controllers/category_controller.dart';
+import 'package:web_app/views/sidebar_screens/widgets/category_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
-  static const String id = '/category-screen';
+  static const String id = 'category-screen';
   const CategoryScreen({super.key});
 
   @override
@@ -112,6 +113,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       context: context,
                       name: categoryName,
                     );
+                    setState(() {
+                      _bannerImage = null;
+                      _image = null;
+                      _formKey.currentState!.reset();
+                    });
                   }
                 },
               ),
@@ -164,6 +170,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             padding: const EdgeInsets.all(4.0),
             child: Divider(color: Colors.grey),
           ),
+          CategoryWidget(),
         ],
       ),
     );

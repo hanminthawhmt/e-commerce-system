@@ -5,6 +5,7 @@ import 'package:web_app/views/sidebar_screens/buyers_screen.dart';
 import 'package:web_app/views/sidebar_screens/category_screen.dart';
 import 'package:web_app/views/sidebar_screens/orders_screen.dart';
 import 'package:web_app/views/sidebar_screens/product_screen.dart';
+import 'package:web_app/views/sidebar_screens/subcategory_screen.dart';
 import 'package:web_app/views/sidebar_screens/upload_banner_screen.dart';
 import 'package:web_app/views/sidebar_screens/vendors_screen.dart';
 
@@ -42,6 +43,11 @@ class _MainScreenState extends State<MainScreen> {
           _selectedScreen = CategoryScreen();
         });
         break;
+
+      case SubCategoryScreen.id:
+        setState(() {
+          _selectedScreen = SubCategoryScreen();
+        });
 
       case UploadBannerScreen.id:
         setState(() {
@@ -99,6 +105,11 @@ class _MainScreenState extends State<MainScreen> {
             title: 'Categories',
             route: CategoryScreen.id,
             icon: Icons.category,
+          ),
+          AdminMenuItem(
+            title: 'Subcategories',
+            route: SubCategoryScreen.id,
+            icon: Icons.category_outlined,
           ),
           AdminMenuItem(
             title: 'Upload Banners',
