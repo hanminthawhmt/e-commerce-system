@@ -21,7 +21,7 @@ router.post("/api/signup", async (req, res) => {
       let user = new User({ fullName, email, password: hashPassword });
       user = await user.save();
       res.json({ user });
-      console.log('sign up status code: ' + res.statusCode);
+      console.log("sign up status code: " + res.statusCode);
     }
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -42,8 +42,8 @@ router.post("/api/signin", async (req, res) => {
       } else {
         const token = jwt.sign({ id: foundUser._id }, "passwordKey");
         const { password, ...userWithoutPassword } = foundUser._doc;
-        res.json({ token, ...userWithoutPassword });
-        console.log('login status code: ' + res.statusCode);
+        res.json({ token, user: userWithoutPassword });
+        console.log("login status code: " + res.statusCode);
       }
     }
   } catch (e) {
