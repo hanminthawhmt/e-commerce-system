@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_store_app/global_variables.dart';
 import 'package:multi_store_app/models/user.dart';
+import 'package:multi_store_app/provider/user_provider.dart';
 import 'package:multi_store_app/services/handle_http_response.dart';
 import 'package:multi_store_app/views/screens/authentication_screens/login_screen.dart';
 import 'package:multi_store_app/views/screens/main_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final providerContainer = ProviderContainer();
 
 class AuthController {
   Future<void> signUpUsers({
@@ -50,8 +55,20 @@ class AuthController {
       handleResponse(
           response: response,
           context: context,
-          onSuccess: () {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>MainScreen()),(Route<dynamic>route)=> false);
+          onSuccess: () async {
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            String token = jsonDecode(response.body)['token'];
+            await preferences.setString('auth_token', token);
+            final userJson = jsonEncode(jsonDecode(response.body)['user']);
+            //update the application state using riverpod
+            providerContainer.read(userProvider.notifier).setUser(userJson);
+            // store the data in sharepreferes for future use
+            await preferences.setString('user', userJson);
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => MainScreen()),
+                (Route<dynamic> route) => false);
             showSnackBar(context, 'Logged In');
           });
     } catch (e) {
